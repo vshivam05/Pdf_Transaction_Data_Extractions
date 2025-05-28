@@ -28,5 +28,5 @@ export default async function translate(transactions) {
         documentRemarks: await translateText(tx.documentRemarks),
       };
     })
-  );
+  );a
 }

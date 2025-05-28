@@ -1,19 +1,6 @@
-// import fs from "fs";
-// import TransactionService from "../services/transactionService.js";
-
-// export const uploadPDF = async (req, res) => {
-//     console.log("from the controller upload pdf",req.body)
-//   try {
-//     const fileBuffer = fs.readFileSync(req.file.path);
-//     const result = await TransactionService.processPDF(fileBuffer);
-//     res.status(201).json(result);
-//   } catch (error) {
-//     console.error("Controller Error:", error);
-//     res.status(500).json({ message: "Failed to process PDF" });
-//   }
-// };
 import fs from "fs/promises";
 import TransactionService from "../services/transactionService.js";
+import Transaction from "../models/Transaction.js";
 
 export const uploadPDF = async (req, res) => {
   try {
@@ -28,3 +15,21 @@ export const uploadPDF = async (req, res) => {
   }
 };
 
+export const searchTransactions = async (req, res) => {
+  try {
+    const { buyerName, sellerName, houseNumber, surveyNumber, documentNumber } = req.query;
+
+    const filter = {};
+    if (buyerName) filter.buyerName = { $regex: buyerName, $options: "i" };
+    if (sellerName) filter.sellerName = { $regex: sellerName, $options: "i" };
+    if (houseNumber) filter.houseNumber = { $regex: houseNumber, $options: "i" };
+    if (surveyNumber) filter.surveyNumber = { $regex: surveyNumber, $options: "i" };
+    if (documentNumber) filter.documentNumber = { $regex: documentNumber, $options: "i" };
+
+    const results = await Transaction.find(filter);
+    res.status(200).json(results);
+  } catch (error) {
+    console.error("Error searching transactions:", error);
+    res.status(500).json({ message: "Failed to search transactions" });
+  }
+};
