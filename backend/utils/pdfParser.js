@@ -132,7 +132,26 @@ volPage: getFieldBetween(
     village: getFieldBetween(lines, ["Village", "கிராமம்"], ["Survey No", "புல எண்"]),
     surveyNumber: getFieldBetween(lines, ["Survey No", "புல எண்"], ["Plot No", "மைன எண்"]),
     // plotNumber: getFieldBetween(lines, ["Plot No", "மைன எண்"], ["எல்லை விபரங்கள்", "Boundary"]),
-   plotNumber: getFieldInline(lines, ["Plot No", "மைன எண்"]),
+   plotNumber: getFieldBetween(lines, ["Plot No", "மைன எண்"], ["எல்லை விபரங்கள்", "Boundary", "Schedule Remarks", "சொத்து விவரம்"]),
+  
+  // Debug logs to verify extracted fields
+  // Commenting out debug logs to avoid cluttering output
+  // console.log("Extracted nature:", getFieldBetween(
+  //   lines,
+  //   ["Nature", "தன்மை", "Nature/தன்ைம"],
+  //   ["Name of Executant", "Name of Executant(s)", "எழுதிக்கொடுத்தவர்", "எழுதிக்ெகாடுத்தவர்"]
+  // ));
+  // console.log("Extracted sellerName:", getFieldBetween(
+  //   lines,
+  //   ["Name of Executant", "Name of Executant(s)", "எழுதிக்கொடுத்தவர்", "எழுதிக்ெகாடுத்தவர்"],
+  //   ["Name of Claimant", "Name of Claimant(s)", "எழுதி வாங்கியவர்"]
+  // ));
+  // console.log("Extracted buyerName:", getFieldBetween(
+  //   lines,
+  //   ["Name of Claimant", "Name of Claimant(s)", "எழுதி வாங்கியவர்"],
+  //   ["Vol.No", "Vol.No & Page. No", "தொகுதி எண்"]
+  // ));
+  // console.log("Extracted plotNumber:", getFieldBetween(lines, ["Plot No", "மைன எண்"], ["எல்லை விபரங்கள்", "Boundary", "Schedule Remarks", "சொத்து விவரம்"]));
 boundaryDetails: getFieldBetween(
   lines,
   ["எல்லை விபரங்கள்", "Boundary", "எல்ைல விபரங்கள்"],  // ← include misspelling seen in text
