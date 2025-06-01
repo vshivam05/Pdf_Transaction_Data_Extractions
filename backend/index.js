@@ -4,27 +4,44 @@ import dotenv from "dotenv";
 import cors from "cors";
 import transactionRoutes from "./routes/transactionRoutes.js";
 import path from "path";
-
 import { fileURLToPath } from "url";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
+
 dbConnect();
 
 app.use(express.json());
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-app.use(cors());
-// app.use()
+app.use(cors({
+  origin: "http://localhost:5173",  // Match React dev server
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true  // Optional: if you're using cookies/sessions
+}));
 
+// Serve static files (PDFs) with correct headers
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads"), {
+  setHeaders: (res, filePath) => {
+    if (path.extname(filePath).toLowerCase() === ".pdf") {
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+    }
+  },
+}));
+
+// Routes
 app.use("/api", transactionRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is listening at port ${PORT}`);
 });
+
 
 // import express from "express";
 // import axios from "axios";

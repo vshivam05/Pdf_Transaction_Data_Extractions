@@ -5,10 +5,17 @@ import Transaction from "../models/Transaction.js";
 export const uploadPDF = async (req, res) => {
   try {
     console.log("Uploaded file:", req.file);
-    const buffer = await fs.readFile(req.file.path);  // Read the uploaded file
+    const buffer = await fs.readFile(req.file.path); // Read the uploaded file
     const result = await TransactionService.processPDF(buffer);
-    await fs.unlink(req.file.path);  // Delete the file after processing (optional)
-    res.status(201).json(result);
+    result.filename = req.file.filename;
+    // await fs.unlink(req.file.path);  // Delete the file after processing (optional)
+    // Add filename to result for frontend preview
+    // console.log("file name",req.file.filename);
+    // res.status(201).json(result);
+    res.status(201).json({
+      filename: req.file.filename, // Now it’s at top level
+      ...result, // Spread other properties like transactions, etc.
+    });
   } catch (error) {
     console.error("Error processing PDF:", error);
     res.status(500).json({ message: "Failed to process PDF" });
@@ -17,16 +24,17 @@ export const uploadPDF = async (req, res) => {
 
 export const searchTransactions = async (req, res) => {
   try {
-    const { buyerName, sellerName, houseNumber, surveyNumber, documentNumber } = req.query;
+    // const { buyerName, sellerName, houseNumber, surveyNumber, documentNumber } = req.query;
 
-    const filter = {};
-    if (buyerName) filter.buyerName = { $regex: buyerName, $options: "i" };
-    if (sellerName) filter.sellerName = { $regex: sellerName, $options: "i" };
-    if (houseNumber) filter.houseNumber = { $regex: houseNumber, $options: "i" };
-    if (surveyNumber) filter.surveyNumber = { $regex: surveyNumber, $options: "i" };
-    if (documentNumber) filter.documentNumber = { $regex: documentNumber, $options: "i" };
+    // const filter = {};
+    // if (buyerName) filter.buyerName = { $regex: buyerName, $options: "i" };
+    // if (sellerName) filter.sellerName = { $regex: sellerName, $options: "i" };
+    // if (houseNumber) filter.houseNumber = { $regex: houseNumber, $options: "i" };
+    // if (surveyNumber) filter.surveyNumber = { $regex: surveyNumber, $options: "i" };
+    // if (documentNumber) filter.documentNumber = { $regex: documentNumber, $options: "i" };
 
-    const results = await Transaction.find(filter);
+    const results = await Transaction.find({});
+    console.log(results);
     res.status(200).json(results);
   } catch (error) {
     console.error("Error searching transactions:", error);
