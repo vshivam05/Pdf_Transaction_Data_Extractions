@@ -13,8 +13,8 @@ export const uploadPDF = async (req, res) => {
     // console.log("file name",req.file.filename);
     // res.status(201).json(result);
     res.status(201).json({
-      filename: req.file.filename, 
-      ...result, 
+      filename: req.file.filename,
+      ...result,
     });
   } catch (error) {
     console.error("Error processing PDF:", error);
@@ -24,14 +24,18 @@ export const uploadPDF = async (req, res) => {
 
 export const searchTransactions = async (req, res) => {
   try {
-    const { buyerName, sellerName, houseNumber, surveyNumber, documentNumber } = req.query;
+    const { plotNumber, registrationDate, documentNumber } =
+      req.query;
 
     const filter = {};
-    if (buyerName) filter.buyerName = { $regex: buyerName, $options: "i" };
-    if (sellerName) filter.sellerName = { $regex: sellerName, $options: "i" };
-    if (houseNumber) filter.plotNumber = { $regex: houseNumber, $options: "i" };
-    if (surveyNumber) filter.surveyNumber = { $regex: surveyNumber, $options: "i" };
-    if (documentNumber) filter.documentNumber = { $regex: documentNumber, $options: "i" };
+    if (plotNumber) filter.plotNumber = { $regex: plotNumber, $options: "i" };
+    if (registrationDate)
+      filter.registrationDate = { $regex: registrationDate, $options: "i" };
+    // if (houseNumber) filter.plotNumber = { $regex: houseNumber, $options: "i" };
+    // if (surveyNumber)
+    //   filter.surveyNumber = { $regex: surveyNumber, $options: "i" };
+    if (documentNumber)
+      filter.documentNumber = { $regex: documentNumber, $options: "i" };
 
     const results = await Transaction.find(filter);
     // console.log(results);

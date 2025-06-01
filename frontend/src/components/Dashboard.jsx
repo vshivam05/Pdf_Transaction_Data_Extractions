@@ -143,7 +143,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchTransactions();
-  }, []);
+  }, [filters]);
 
   const handleUpload = async (e) => {
     e.preventDefault();
@@ -209,27 +209,27 @@ export default function Dashboard() {
       {/* Filter Form */}
       <form onSubmit={handleFilterSubmit} className="mb-6 space-y-4">
         <div className="flex space-x-4">
-          <input
+          {/* <input
             type="text"
             name="buyerName"
             placeholder="Buyer Name"
             value={filters.buyerName}
             onChange={handleFilterChange}
             className="border border-gray-300 rounded p-2 flex-1"
-          />
-          <input
+          /> */}
+          {/* <input
             type="text"
             name="sellerName"
             placeholder="Seller Name"
             value={filters.sellerName}
             onChange={handleFilterChange}
             className="border border-gray-300 rounded p-2 flex-1"
-          />
+          /> */}
           <input
             type="text"
-            name="houseNumber"
-            placeholder="House Number"
-            value={filters.houseNumber}
+            name="plotNumber"
+            placeholder="Plot Number"
+            value={filters.plotNumber}
             onChange={handleFilterChange}
             className="border border-gray-300 rounded p-2 flex-1"
           />
@@ -237,9 +237,9 @@ export default function Dashboard() {
         <div className="flex space-x-4">
           <input
             type="text"
-            name="surveyNumber"
-            placeholder="Survey Number"
-            value={filters.surveyNumber}
+            name="registrationDate"
+            placeholder="Registration date"
+            value={filters.registrationDate}
             onChange={handleFilterChange}
             className="border border-gray-300 rounded p-2 flex-1"
           />
