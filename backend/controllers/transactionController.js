@@ -13,8 +13,8 @@ export const uploadPDF = async (req, res) => {
     // console.log("file name",req.file.filename);
     // res.status(201).json(result);
     res.status(201).json({
-      filename: req.file.filename, // Now it’s at top level
-      ...result, // Spread other properties like transactions, etc.
+      filename: req.file.filename, 
+      ...result, 
     });
   } catch (error) {
     console.error("Error processing PDF:", error);
@@ -34,7 +34,7 @@ export const searchTransactions = async (req, res) => {
     if (documentNumber) filter.documentNumber = { $regex: documentNumber, $options: "i" };
 
     const results = await Transaction.find(filter);
-    console.log(results);
+    // console.log(results);
     res.status(200).json(results);
   } catch (error) {
     console.error("Error searching transactions:", error);

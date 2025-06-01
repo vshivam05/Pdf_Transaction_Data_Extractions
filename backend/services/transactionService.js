@@ -5,7 +5,7 @@ import translate from "../utils/translator.js";
 const processPDF = async (pdfBufferOrPath) => {
   // console.log("Processing PDF:", pdfBufferOrPath);
   const extractedData = await parsePDF(pdfBufferOrPath);
-  // console.log("Extracted data:", extractedData[2]);
+  console.log("Extracted data:", extractedData[2]);
   if (extractedData.length === 0) {
     console.log("No transactions found or file not found.");
     return [];
