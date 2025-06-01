@@ -24,16 +24,16 @@ export const uploadPDF = async (req, res) => {
 
 export const searchTransactions = async (req, res) => {
   try {
-    // const { buyerName, sellerName, houseNumber, surveyNumber, documentNumber } = req.query;
+    const { buyerName, sellerName, houseNumber, surveyNumber, documentNumber } = req.query;
 
-    // const filter = {};
-    // if (buyerName) filter.buyerName = { $regex: buyerName, $options: "i" };
-    // if (sellerName) filter.sellerName = { $regex: sellerName, $options: "i" };
-    // if (houseNumber) filter.houseNumber = { $regex: houseNumber, $options: "i" };
-    // if (surveyNumber) filter.surveyNumber = { $regex: surveyNumber, $options: "i" };
-    // if (documentNumber) filter.documentNumber = { $regex: documentNumber, $options: "i" };
+    const filter = {};
+    if (buyerName) filter.buyerName = { $regex: buyerName, $options: "i" };
+    if (sellerName) filter.sellerName = { $regex: sellerName, $options: "i" };
+    if (houseNumber) filter.plotNumber = { $regex: houseNumber, $options: "i" };
+    if (surveyNumber) filter.surveyNumber = { $regex: surveyNumber, $options: "i" };
+    if (documentNumber) filter.documentNumber = { $regex: documentNumber, $options: "i" };
 
-    const results = await Transaction.find({});
+    const results = await Transaction.find(filter);
     console.log(results);
     res.status(200).json(results);
   } catch (error) {

@@ -110,9 +110,18 @@ export default function Dashboard() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchTransactions = async () => {
+  const [filters, setFilters] = React.useState({
+    buyerName: "",
+    sellerName: "",
+    houseNumber: "",
+    surveyNumber: "",
+    documentNumber: "",
+  });
+
+  const fetchTransactions = async (filterParams = {}) => {
     try {
-      const res = await fetch(`${API_URL}/transactions`);
+      const query = new URLSearchParams(filterParams).toString();
+      const res = await fetch(`${API_URL}/transactions?${query}`);
       if (!res.ok) throw new Error("Failed to fetch transactions");
       const data = await res.json();
       console.log("data from dashboard", data);
@@ -120,6 +129,16 @@ export default function Dashboard() {
     } catch (err) {
       setError(err.message);
     }
+  };
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleFilterSubmit = (e) => {
+    e.preventDefault();
+    fetchTransactions(filters);
   };
 
   useEffect(() => {
@@ -186,6 +205,61 @@ export default function Dashboard() {
           {uploading ? "Uploading..." : "Upload PDF"}
         </button>
       </form>
+
+      {/* Filter Form */}
+      <form onSubmit={handleFilterSubmit} className="mb-6 space-y-4">
+        <div className="flex space-x-4">
+          <input
+            type="text"
+            name="buyerName"
+            placeholder="Buyer Name"
+            value={filters.buyerName}
+            onChange={handleFilterChange}
+            className="border border-gray-300 rounded p-2 flex-1"
+          />
+          <input
+            type="text"
+            name="sellerName"
+            placeholder="Seller Name"
+            value={filters.sellerName}
+            onChange={handleFilterChange}
+            className="border border-gray-300 rounded p-2 flex-1"
+          />
+          <input
+            type="text"
+            name="houseNumber"
+            placeholder="House Number"
+            value={filters.houseNumber}
+            onChange={handleFilterChange}
+            className="border border-gray-300 rounded p-2 flex-1"
+          />
+        </div>
+        <div className="flex space-x-4">
+          <input
+            type="text"
+            name="surveyNumber"
+            placeholder="Survey Number"
+            value={filters.surveyNumber}
+            onChange={handleFilterChange}
+            className="border border-gray-300 rounded p-2 flex-1"
+          />
+          <input
+            type="text"
+            name="documentNumber"
+            placeholder="Document Number"
+            value={filters.documentNumber}
+            onChange={handleFilterChange}
+            className="border border-gray-300 rounded p-2 flex-1"
+          />
+          <button
+            type="submit"
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+          >
+            Search
+          </button>
+        </div>
+      </form>
+
       {error && <p className="text-red-600 mb-4">{error}</p>}
 
       <div className="flex space-x-6">
