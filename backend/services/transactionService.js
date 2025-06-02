@@ -11,9 +11,10 @@ const processPDF = async (pdfBufferOrPath) => {
     return [];
   }
 
+    await Transaction.deleteMany({});
   // Translate extracted Tamil fields to English
   const translatedData = await translate(extractedData);
-  console.log(translatedData[1]);
+  // console.log(translatedData[1]);
   // Save translated transactions to MongoDB
   const saved = await Transaction.insertMany(translatedData);
   return extractedData;

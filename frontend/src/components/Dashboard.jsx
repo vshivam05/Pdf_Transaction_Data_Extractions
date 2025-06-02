@@ -20,7 +20,7 @@ export default function Dashboard() {
   const fetchTransactions = async (filterParams = {}) => {
     try {
       const query = new URLSearchParams(filterParams).toString();
-      const res = await fetch(`${API_URL}/transactions?${query}`);
+      const res = await fetch(`${API_URL}/api/transactions?${query}`);
       if (!res.ok) throw new Error("Failed to fetch transactions");
       const data = await res.json();
       console.log("data from dashboard", data);
@@ -59,7 +59,7 @@ export default function Dashboard() {
 
     setUploading(true);
     try {
-      const res = await fetch(`${API_URL}/upload`, {
+      const res = await fetch(`${API_URL}/api/upload`, {
         method: "POST",
         body: formData,
       });
@@ -69,9 +69,7 @@ export default function Dashboard() {
       console.log("data file name from dashboard", data.filename);
 
       if (data.filename) {
-        setSelectedPdfUrl(
-          `https://pdf-transaction-data-extractions-2.onrender.com/uploads/${data.filename}`
-        );
+        setSelectedPdfUrl(`${API_URL}/uploads/${data.filename}`);
       } else {
         setSelectedPdfUrl(null);
       }
